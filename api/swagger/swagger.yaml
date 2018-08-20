@@ -146,6 +146,73 @@ paths:
           description: Level of detail (time)
           required: true
           type: string
+        - name: currency
+          in: query
+          description: Desired currency
+          required: true
+          type: string
+        - name: adjusted
+          in: query
+          description: Adjusted
+          required: true
+          type: boolean
+        - name: immutable
+          in: query
+          description: Immutable
+          required: true
+          type: boolean
+        - name: manually_added
+          in: query
+          description: Manually added
+          required: true
+          type: boolean
+        - name: status
+          in: query
+          description: Possible values delayed, confirmed, cancelled
+          required: true
+          type: array
+          items:
+            type: string
+        - name: format
+          in: query
+          description: Desired format
+          required: true
+          type: string
+        - name: image
+          in: query
+          description: Image
+          required: true
+          type: string
+        - name: fixed_id
+          in: query
+          description: Fixed ID
+          required: true
+          type: string
+        - name: order_reference
+          in: query
+          description: Order reference
+          required: true
+          type: string
+        - name: sort_by
+          in: query
+          description: Sort by field
+          required: true
+          type: string
+        - name: order
+          in: query
+          description: ASC or DESC
+          required: true
+          type: string
+        - name: graph
+          in: query
+          description: Return graph data
+          required: true
+          type: boolean
+        - name: locale
+          in: query
+          description: Localization
+          required: true
+          type: string
       responses:
         "202":
           description: Queued
