@@ -1,0 +1,458 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Microservice API draft
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /reports:
+    get:
+      operationId: resources
+      x-swagger-router-controller: resources
+      responses:
+        "200":
+          description: Get resources on this path
+          schema:
+            type: array
+            items:
+              type: string
+  /reports/performance:
+    get:
+      description: Return desired performance report
+      parameters:
+        - name: start_date
+          in: query
+          description: Starting date of the report data
+          required: true
+          type: string
+        - name: end_date
+          in: query
+          description: Ending date of the report data
+          required: true
+          type: string
+        - name: status
+          in: query
+          description: Status
+          required: true
+          type: array
+          items:
+            type: string
+        - name: currency
+          in: query
+          description: Desired currency
+          required: true
+          type: string
+        - name: type
+          in: query
+          description: Type of performance report
+          required: true
+          type: string
+        - name: compare_start_date
+          in: query
+          description: Optional - start compare date
+          required: false
+          type: string
+        - name: compare_end_date
+          in: query
+          description: Optional - end compare date
+          required: false
+          type: string
+        - name: program
+          in: query
+          description: Programs ID to fetch data from
+          required: true
+          type: array
+          items:
+            type: integer
+        - name: format
+          in: query
+          description: Return data in the following format
+          required: true
+          type: string
+        - name: detail_level
+          in: query
+          description: level of detail (time)
+          required: true
+          type: string
+        - name: limit
+          in: query
+          description: Limit number of results
+          required: true
+          type: integer
+        - name: event_type
+          in: query
+          description: Event type
+          required: true
+          type: array
+          items:
+            type: string
+        - name: locale
+          in: query
+          description: Localization
+          required: true
+          type: string
+      responses:
+        "202":
+          description: Queued
+          schema:
+            $ref: "#/definitions/JobLocationResponse"
+        "422":
+          description: Unprocessable entity
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /reports/transactions:
+    get:
+      description: Return desired transactions report
+      parameters:
+        - name: start_date
+          in: query
+          description: Starting date of the report data
+          required: true
+          type: string
+        - name: end_date
+          in: query
+          description: Ending date of the report data
+          required: true
+          type: string
+        - name: program
+          in: query
+          description: Program ID
+          required: true
+          type: array
+          items:
+            type: integer
+        - name: type
+          in: query
+          description: Possible values CPA, CPC
+          required: true
+          type: array
+          items:
+            type: string
+        - name: period_type
+          in: query
+          description: Level of detail (time)
+          required: true
+          type: string
+      responses:
+        "202":
+          description: Queued
+          schema:
+            $ref: "#/definitions/JobLocationResponse"
+        "422":
+          description: Unprocessable entity
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /reports/activity:
+    get:
+      description: Return desired activity report
+      parameters:
+        - name: start_date
+          in: query
+          description: Starting date of the report data
+          required: true
+          type: string
+        - name: end_date
+          in: query
+          description: Ending date of the report data
+          required: true
+          type: string
+        - name: program
+          in: query
+          description: Program ID
+          required: true
+          type: array
+          items:
+            type: integer
+        - name: status
+          in: query
+          description: Possible values ['confirmed', 'delayed', 'cancelled']
+          required: true
+          type: array
+          items:
+            type: string
+        - name: period
+          in: query
+          description: Level of detail (time)
+          required: true
+          type: string
+        - name: currency
+          in: query
+          description: Desired currency
+          required: true
+          type: string
+        - name: format
+          in: query
+          description: Return data in the following format
+          required: true
+          type: string
+        - name: compare_start_date
+          in: query
+          description: Optional - start compare date
+          required: false
+          type: string
+        - name: compare_end_date
+          in: query
+          description: Optional - end compare date
+          required: false
+          type: string
+      responses:
+        "202":
+          description: Queued
+          schema:
+            $ref: "#/definitions/JobLocationResponse"
+        "422":
+          description: Unprocessable entity
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+  /reports/device:
+    get:
+      description: Return desired device report
+      parameters:
+        - name: start_date
+          in: query
+          description: Starting date of the report data
+          required: true
+          type: string
+        - name: end_date
+          in: query
+          description: Ending date of the report data
+          required: true
+          type: string
+        - name: program
+          in: query
+          description: Program ID
+          required: true
+          type: array
+          items:
+            type: integer
+        - name: status
+          in: query
+          description: Possible values ['confirmed', 'delayed', 'cancelled']
+          required: true
+          type: array
+          items:
+            type: string
+        - name: period
+          in: query
+          description: Level of detail (time)
+          required: true
+          type: string
+        - name: currency
+          in: query
+          description: Desired currency
+          required: true
+          type: string
+
+      responses:
+        "202":
+          description: Queued
+          schema:
+            $ref: "#/definitions/JobLocationResponse"
+        "422":
+          description: Unprocessable entity
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /reports/trasaction-enquiry:
+    get:
+      description: Return desired performance report
+      parameters:
+        - name: name
+          in: query
+          description: Report name
+          required: true
+          type: string
+        - name: report_type
+          in: query
+          description: Type of report (activity, etc...)
+          required: true
+          type: string
+        - name: owner_type
+          in: query
+          description: Owner user type
+          required: true
+          type: string
+        - name: owner_id
+          in: query
+          description: ID of owner
+          required: true
+          type: string
+        - name: start_date
+          in: query
+          description: Starting date of the report data
+          required: true
+          type: string
+        - name: end_date
+          in: query
+          description: Ending date of the report data
+          required: true
+          type: string
+        - name: status
+          in: query
+          description: Status
+          required: true
+          type: array
+          items:
+            type: string
+        - name: currency
+          in: query
+          description: Desired currency
+          required: true
+          type: string
+        - name: compare_dates
+          in: query
+          description: Activate date comparison
+          required: true
+          type: boolean
+        - name: compare_start_date
+          in: query
+          description: Optional - start compare date
+          required: false
+          type: string
+        - name: compare_end_date
+          in: query
+          description: Optional - end compare date
+          required: false
+          type: string
+        - name: program
+          in: query
+          description: Programs ID to fetch data from
+          required: true
+          type: array
+          items:
+            type: integer
+        - name: event_type
+          in: query
+          description: Possible values CPA, CPC
+          required: true
+          type: array
+          items:
+            type: string
+        - name: urlProgram
+          in: query
+          description: (?)
+          required: true
+          type: string
+        - name: line_chart
+          in: query
+          description: Is line chart?
+          required: true
+          type: boolean
+        - name: locale
+          in: query
+          description: Localization
+          required: true
+          type: string
+      responses:
+        "202":
+          description: Queued
+          schema:
+            $ref: "#/definitions/JobLocationResponse"
+        "422":
+          description: Unprocessable entity
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /reports/trasaction-status:
+    get:
+      description: Return desired transaction status report
+      parameters:
+        - name: start_date
+          in: query
+          description: Starting date of the report data
+          required: true
+          type: string
+        - name: end_date
+          in: query
+          description: Ending date of the report data
+          required: true
+          type: string
+        - name: program
+          in: query
+          description: Programs ID to fetch data from
+          required: true
+          type: array
+          items:
+            type: integer
+        - name: period_type
+          in: query
+          description: Level of detail (time)
+          required: true
+          type: string
+        - name: type
+          in: query
+          description: Possible values CPA, CPC
+          required: true
+          type: array
+          items:
+            type: string
+        - name: currency
+          in: query
+          description: Desired currency
+          required: true
+          type: string
+        - name: immutable
+          in: query
+          description: Immutable
+          required: true
+          type: boolean
+        - name: status
+          in: query
+          description: Possible values confirmed, delayed, cancelled
+          required: true
+          type: array
+          items:
+            type: string
+        - name: locale
+          in: query
+          description: Localization
+          required: true
+          type: string
+      responses:
+        "202":
+          description: Queued
+          schema:
+            $ref: "#/definitions/JobLocationResponse"
+        "422":
+          description: Unprocessable entity
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+      
+# complex objects have schema definitions
+definitions:
+  JobLocationResponse:
+    required:
+      - jobId
+    properties:
+      jobId:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  #HelloWorldResponse:
+    #required:
+      #- message
+    #properties:
+      #message:
+        #type: string
+  #ErrorResponse:
+    #required:
+      #- message
+    #properties:
+      #message:
+        #type: string
